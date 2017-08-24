@@ -8,7 +8,7 @@ module Emitter
       @host, @port, @master_key = host, port, master_key
     end
 
-    def keygen(channel_name, type: 'rwls')
+    def keygen(channel_name, type: 'rwls', ttl: 0)
       client = PahoMqtt::Client.new
       client.connect(@host, @port)
       waiting_puback = true
@@ -22,7 +22,7 @@ module Emitter
       client.on_puback do
         waiting_puback = false
       end
-      client.publish('emitter/keygen', {key: @master_key, channel: channel_name, type: type}.to_json)
+      client.publish('emitter/keygen', {key: @master_key, channel: channel_name, type: type, ttl: ttl}.to_json)
       sleep 0.001 while waiting_puback
       client.disconnect
 
