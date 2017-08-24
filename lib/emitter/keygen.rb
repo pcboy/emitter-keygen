@@ -4,13 +4,13 @@ require 'paho-mqtt'
 
 module Emitter
   class Keygen
-    def initialize(host, port, master_key)
-      @host, @port, @master_key = host, port, master_key
+    def initialize(host, port, master_key, ssl: true)
+      @host, @port, @master_key, @ssl = host, port, master_key, ssl
     end
 
-    def keygen(channel_name, type: 'rwls', ttl: 0)
+    def keygen(channel_name, type: 'rwlsp', ttl: 0)
       client = PahoMqtt::Client.new
-      client.connect(@host, @port)
+      client.connect(@host, @port, ssl: @ssl)
       waiting_puback = true
       key = false
       client.on_message do |message|
