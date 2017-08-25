@@ -10,7 +10,9 @@ module Emitter
 
     def keygen(channel_name, type: 'rwlsp', ttl: 0)
       client = PahoMqtt::Client.new
-      client.connect(@host, @port, ssl: @ssl)
+      client.ssl = true if @ssl
+      # client.config_ssl_context(certificate_path, key_path) # TODO
+      client.connect(@host, @port)
       waiting_puback = true
       key = false
       client.on_message do |message|
