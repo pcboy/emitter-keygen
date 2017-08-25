@@ -4,7 +4,7 @@ require 'paho-mqtt'
 
 module Emitter
   class Keygen
-    def initialize(host, port, master_key, ssl: true)
+    def initialize(host, port, master_key, ssl: false)
       @host, @port, @master_key, @ssl = host, port, master_key, ssl
     end
 
